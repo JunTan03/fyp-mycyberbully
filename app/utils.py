@@ -2,6 +2,16 @@ import chardet
 import pandas as pd
 from io import StringIO
 import os
+import mysql.connector
+from flask import current_app
+
+def get_db_connection():
+    return mysql.connector.connect(
+        host=current_app.config['MYSQL_HOST'],
+        user=current_app.config['MYSQL_USER'],
+        password=current_app.config['MYSQL_PASSWORD'],
+        database=current_app.config['MYSQL_DB']
+    )
 
 def read_csv_with_encoding(filepath):
     with open(filepath, 'rb') as f:
