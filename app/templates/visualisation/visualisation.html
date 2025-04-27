@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tweet Visualisation Dashboard</title>
+</head>
+<body>
+    <h2>Tweet Analysis Dashboard</h2>
+
+    <form method="POST" action="{{ url_for('visualise') }}">
+        <label for="months">Select Month(s):</label><br>
+        {% for month in months %}
+            <input type="checkbox" name="months" value="{{ month }}" 
+                   {% if month in selected_months %}checked{% endif %}> {{ month }}<br>
+        {% endfor %}
+        <br>
+        <label for="chart_type">Chart Type:</label>
+        <select name="chart_type">
+            <option value="bar" {% if chart_type == "bar" %}selected{% endif %}>Bar</option>
+            <option value="pie" {% if chart_type == "pie" %}selected{% endif %}>Pie</option>
+        </select>
+        <br><br>
+        <button type="submit">Update Charts</button>
+    </form>
+
+    <hr>
+
+    <h3>Sentiment Distribution</h3>
+    {{ sentiment_plot|safe }}
+
+    <h3>Cyberbullying Distribution</h3>
+    {{ cyber_plot|safe }}
+
+    <hr>
+
+    <h3>Summary Statistics</h3>
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Positive</th>
+                <th>Negative</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in summary_table %}
+                <tr>
+                    <td>{{ row['month'] }}</td>
+                    <td style="color: {{ row['Positive']['color'] }}">{{ row['Positive']['count'] }} ({{ row['Positive']['change'] }})</td>
+                    <td style="color: {{ row['Negative']['color'] }}">{{ row['Negative']['count'] }} ({{ row['Negative']['change'] }})</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h3>Key Insights</h3>
+    <ul>
+        {% for insight in key_insights %}
+            <li>{{ insight|safe }}</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h3>Word Clouds by Cyberbullying Type</h3>
+    {% for label, img_data in wordclouds.items() %}
+        <h4>{{ label }}</h4>
+        <img src="data:image/png;base64,{{ img_data }}" width="400"><br><br>
+    {% endfor %}
+
+    <hr>
+
+    <h3>Policy Brief</h3>
+    <div>
+        {{ policy_brief|safe }}
+    </div>
+
+    <br>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+
+    <!-- 🛜 Simple floating chatbot -->
+<div id="chatbot-container" style="position:fixed;bottom:20px;right:20px;">
+    <button onclick="toggleChatbot()" style="padding:10px 20px;border-radius:30px;background-color:#007BFF;color:white;border:none;">Chat 💬</button>
+    <div id="chatbox" style="display:none;margin-top:10px;background:white;padding:10px;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,0.3);width:300px;">
+        <div id="chat-messages" style="max-height:200px;overflow-y:auto;font-size:14px;margin-bottom:10px;"></div>
+        <input type="text" id="chat-input" placeholder="Ask a question..." style="width:80%;padding:5px;">
+        <button onclick="sendMessage()" style="padding:5px;">Send</button>
+    </div>
+</div>
+
+<script>
+function toggleChatbot() {
+    var chatbox = document.getElementById("chatbox");
+    if (chatbox.style.display === "none") {
+        chatbox.style.display = "block";
+    } else {
+        chatbox.style.display = "none";
+    }
+}
+
+function sendMessage() {
+    var input = document.getElementById("chat-input");
+    var message = input.value.trim();
+    if (!message) return;
+
+    var chatMessages = document.getElementById("chat-messages");
+    chatMessages.innerHTML += "<div><strong>You:</strong> " + message + "</div>";
+
+    fetch("/chatbot", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: message})
+    })
+    .then(response => response.json())
+    .then(data => {
+        chatMessages.innerHTML += "<div><strong>Bot:</strong> " + data.answer + "</div>";
+        input.value = "";
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    })
+    .catch(error => {
+        chatMessages.innerHTML += "<div><strong>Bot:</strong> Error connecting to server.</div>";
+    });
+}
+</script>
+</body>
+</html>

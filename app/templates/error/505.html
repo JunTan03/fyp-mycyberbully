@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>500 Internal Server Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        h1 {
+            font-size: 80px;
+            color: #e67e22;
+        }
+        p {
+            font-size: 24px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>500</h1>
+    <p>Sorry! Something went wrong.</p>
+    <p><a href="{{ url_for('dashboard') }}">Return to Dashboard</a></p>
+</body>
+</html>

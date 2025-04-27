@@ -1,6 +1,7 @@
 import chardet
 import pandas as pd
 from io import StringIO
+import os
 
 def read_csv_with_encoding(filepath):
     with open(filepath, 'rb') as f:
@@ -17,3 +18,6 @@ def read_csv_with_encoding(filepath):
         return f"Error reading the file: {e}"
 
     return df
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'csv'}
