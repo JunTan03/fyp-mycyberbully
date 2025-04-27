@@ -20,14 +20,18 @@ MODEL_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', 'model'))
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load Models + Tokenizers + Label Encoders
-sentiment_model = DistilBertForSequenceClassification.from_pretrained(os.path.join(MODEL_DIR, 'sentiment_model')).to(device)
-sentiment_tokenizer = DistilBertTokenizer.from_pretrained(os.path.join(MODEL_DIR, 'sentiment_tokenizer'))
+sentiment_model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-multilingual-cased")
+sentiment_tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-multilingual-cased")
 
-cyberbullying_model = BertForSequenceClassification.from_pretrained(os.path.join(MODEL_DIR, 'cyberbullying_model')).to(device)
-cyberbullying_tokenizer = BertTokenizer.from_pretrained(os.path.join(MODEL_DIR, 'cyberbullying_tokenizer'))
+cyberbullying_model = BertForSequenceClassification.from_pretrained("bert-base-multilingual-cased")
+cyberbullying_tokenizer = BertTokenizer.from_pretrained("bert-base-multilingual-cased")
 
 label_encoder1 = joblib.load(os.path.join(MODEL_DIR, 'cyberbullying_model/cyber_label_encoder.pkl'))
 label_encoder2 = joblib.load(os.path.join(MODEL_DIR, 'sentiment_label_encoder.pkl'))
+
+# Move models to device
+sentiment_model = sentiment_model.to(device)
+cyberbullying_model = cyberbullying_model.to(device)
 
 sentiment_model.eval()
 cyberbullying_model.eval()
