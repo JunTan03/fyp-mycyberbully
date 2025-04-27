@@ -138,3 +138,17 @@ __all__ = [
     "cyberbullying_model", "cyberbullying_tokenizer",
     "classify_tweet_batch", "preprocess_text"
 ]
+
+# ===============================
+# 🚀 Prewarm (dummy predictions)
+# ===============================
+with torch.no_grad():
+    dummy_input = sentiment_tokenizer("This is a test", return_tensors="pt", padding=True, truncation=True, max_length=128)
+    dummy_input = {k: v.to(device) for k, v in dummy_input.items()}
+    _ = sentiment_model(**dummy_input)
+
+    dummy_input = cyberbullying_tokenizer("This is a test", return_tensors="pt", padding=True, truncation=True, max_length=128)
+    dummy_input = {k: v.to(device) for k, v in dummy_input.items()}
+    _ = cyberbullying_model(**dummy_input)
+
+print("✅ Models prewarmed successfully!")
