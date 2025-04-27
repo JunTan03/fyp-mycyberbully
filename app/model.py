@@ -10,8 +10,8 @@ from ekphrasis.classes.tokenizer import SocialTokenizer
 from ekphrasis.dicts.emoticons import emoticons
 from concurrent.futures import ThreadPoolExecutor
 
-from saved_models.slangdict import slangdict as eng_slang
-from saved_models.malayslangdict import malayslangdict as malay_slang
+from model.slangdict import slangdict as eng_slang
+from model.malayslangdict import malayslangdict as malay_slang
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 MODEL_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', 'model'))
