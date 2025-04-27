@@ -1,0 +1,24 @@
+# Ignore uploads, datasets, and temp folders
+uploads/
+datasets/
+Buang/
+notebooks/        # <- if you want to ignore all Jupyter dev notebooks too
+
+# Ignore Jupyter auto-checkpoint files
+*.ipynb_checkpoints/
+
+# Ignore large model weights (we re-upload when needed)
+*.pt
+*.bin
+*.h5
+
+# Ignore logs and temporary files
+*.log
+__pycache__/
+.DS_Store
+
+# Ignore virtual environment (important!)
+venv/
+model/trial_final/
+model/sentiment_results/
+*.safetensors

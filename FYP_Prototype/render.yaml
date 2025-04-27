@@ -1,0 +1,12 @@
+# tells Render how to start app automatically
+services:
+  - type: web
+    name: cyberbully-flask-app
+    env: python
+    buildCommand: ""
+    startCommand: python run.py
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PORT
+        value: 5000

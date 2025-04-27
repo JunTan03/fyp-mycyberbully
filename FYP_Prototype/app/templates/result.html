@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+</head>
+<body>
+    <h2>Submitted Tweets</h2>
+    <table border="1">
+        <tr>
+            <th>Username</th>
+            <th>Tweet</th>
+            <th>Sentiment</th>
+            <th>Cyberbullying Type</th>
+        </tr>
+        {% for entry in data %}
+        <tr>
+            <td>{{ entry.username }}</td>
+            <td>{{ entry.tweet }}</td>
+            <td>{{ entry.sentiment }}</td>
+            <td>{{ entry.cyberbullying_type }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
